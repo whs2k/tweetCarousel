@@ -1,6 +1,6 @@
 from flask import Flask, redirect, render_template
 import os
-from helper import getTweets
+from helper import getTweets, getReddits
 
 app = Flask(__name__)
 
@@ -11,8 +11,9 @@ def goToInsta(hashtag='fakeamazon'):
 #https://twitter.com/rufnknme/status/1066006390680866816
 @app.route('/')
 def carousel():
-	url_dict = getTweets(search_terms=['amazon', 'counterfeit', 'fake']) #keys = [t1,t2,t3....]s
-	return render_template('carousel.html', **url_dict)
+	twit_url_dict = getTweets(search_terms=['amazonHelp', 'counterfeit']) #keys = [t1,t2,t3....]s
+	red_url_dict = getReddits() #keys = r1. r2 ...
+	return render_template('carousel.html', **twit_url_dict, **red_url_dict)
 def goToInsta(hashtag='fakeamazon'):
 	return redirect("https://www.instagram.com/explore/tags/fakeamazon/?hl=en",
 		code=302)

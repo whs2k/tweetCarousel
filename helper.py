@@ -1,10 +1,11 @@
 import requests
 import pandas as pd
-import tweepy
+import tweepy #for twitter
 import os
 from bs4 import BeautifulSoup
-
-
+import praw #for reddit
+import requests
+import requests.auth
 
 def getTweets(search_terms=['counterfeit','amazonHelp']):
 	consumer_key = '6CM1Yqk0Qz6KUXsDQUS8xmahS'
@@ -26,10 +27,40 @@ def getTweets(search_terms=['counterfeit','amazonHelp']):
 	df['favorites'] = [x.favorite_count for x in cfit_tweets]
 	df['iframe'] = ['https://twitframe.com/show?url=https://twitter.com/{}/status/{}'.format(x.user.screen_name, x.id) for x in cfit_tweets]
 
-	keys = ['t1', 't2']
 	keys = ['t'+str(x) for x in range(len(df['iframe'].tolist()))]
-	values = df['iframe'].tolist()
+	values = list(set(df['iframe'].tolist()))
 	return dict(zip(keys, values))
+
+def getReddits():
+	'''
+	#1. Get Token
+	client_auth = requests.auth.HTTPBasicAuth('BXTDVNZqv8SFyw', 'LQtvysbgBqkh-Zjwl1XyLZMdoD4')
+	post_data = {"grant_type": "password", "username": "whs2k", "password": "osrno1"}
+	headers = {"User-Agent": "ChangeMeClient/0.1 by YourUsername"}
+	response = requests.post("https://www.reddit.com/api/v1/access_token", auth=client_auth, data=post_data, headers=headers)
+	#response.json()
+
+
+	#2. Use Token 
+	headers = {"Authorization": "bearer 56034692712-UGJkxFNvT1OAn_LGs3XOO645V5Y", "User-Agent": "ChangeMeClient/0.1 by YourUsername"}
+	response = requests.get("https://oauth.reddit.com/api/v1/me", headers=headers)
+	#response.json()
+	'''
+
+	reddit = praw.Reddit(client_id='BXTDVNZqv8SFyw',
+                     client_secret='LQtvysbgBqkh-Zjwl1XyLZMdoD4',
+                     password='osrno1',
+                     user_agent='testscript by /u/whs2k',
+                     username='whs2k')
+	if reddit.read_only:
+		print('We Are Connected to Reddit!')
+
+	#search terms controversial, gilded, hot, new, rising, top'''
+	png_urls = [x.url for x in reddit.subreddit('FulfillmentByAmazon').new(limit=1000) if '.png' in x.url]
+	print('We have {} png urls'.format(len(png_urls)))
+
+	keys = ['r'+str(x) for x in range(len(png_urls))]
+	return dict(zip(keys, png_urls))
 
 
 def getTweetsDF():
