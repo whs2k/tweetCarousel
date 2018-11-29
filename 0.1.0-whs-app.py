@@ -7,13 +7,14 @@ app = Flask(__name__)
 def goToInsta(hashtag='fakeamazon'):
 	return redirect("https://www.instagram.com/explore/tags/fakeamazon/?hl=en",
 		code=302)
+twit_url_dict = getTweets(search_terms=['amazonHelp', 'counterfeit']) #keys = [t1,t2,t3....]s
+red_png_dict, red_title_dict = getReddits() #keys = r1. r2 ... titleKepys = r_title1,
 
 #https://twitter.com/rufnknme/status/1066006390680866816
 @app.route('/')
 def carousel():
-	twit_url_dict = getTweets(search_terms=['amazonHelp', 'counterfeit']) #keys = [t1,t2,t3....]s
-	red_url_dict = getReddits() #keys = r1. r2 ...
-	return render_template('carousel.html', **twit_url_dict, **red_url_dict)
+	return render_template('carousel.html', **twit_url_dict, 
+							**red_png_dict, **red_title_dict)
 def goToInsta(hashtag='fakeamazon'):
 	return redirect("https://www.instagram.com/explore/tags/fakeamazon/?hl=en",
 		code=302)

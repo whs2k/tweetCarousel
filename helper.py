@@ -56,11 +56,13 @@ def getReddits():
 		print('We Are Connected to Reddit!')
 
 	#search terms controversial, gilded, hot, new, rising, top'''
-	png_urls = [x.url for x in reddit.subreddit('FulfillmentByAmazon').new(limit=1000) if '.png' in x.url]
+	png_urls = [x.url for x in reddit.subreddit('FulfillmentByAmazon').new(limit=500) if '.png' in x.url]
+	title_txts = [x.title for x in reddit.subreddit('FulfillmentByAmazon').new(limit=500) if '.png' in x.url]
 	print('We have {} png urls'.format(len(png_urls)))
 
-	keys = ['r'+str(x) for x in range(len(png_urls))]
-	return dict(zip(keys, png_urls))
+	png_keys = ['r'+str(x) for x in range(len(png_urls))]
+	title_keys = ['r_title'+str(x) for x in range(len(title_txts))]
+	return dict(zip(png_keys, png_urls)), dict(zip(title_keys, title_txts))
 
 
 def getTweetsDF():
