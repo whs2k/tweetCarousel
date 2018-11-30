@@ -13,7 +13,15 @@ red_png_dict, red_title_dict = getReddits() #keys = r1. r2 ... titleKepys = r_ti
 #https://twitter.com/rufnknme/status/1066006390680866816
 @app.route('/')
 def carousel():
-	return render_template('carousel.html', **twit_url_dict, 
+	return render_template('hello.html')
+
+@app.route('/twitter/')
+def carousel_t():
+	return render_template('carousel_t.html', **twit_url_dict)
+
+@app.route('/reddit/')
+def carousel_r():
+	return render_template('carousel_r.html', 
 							**red_png_dict, **red_title_dict)
 def goToInsta(hashtag='fakeamazon'):
 	return redirect("https://www.instagram.com/explore/tags/fakeamazon/?hl=en",
