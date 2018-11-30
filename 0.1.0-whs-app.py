@@ -15,6 +15,10 @@ red_png_dict, red_title_dict = getReddits() #keys = r1. r2 ... titleKepys = r_ti
 def carousel():
 	return render_template('hello.html')
 
+@app.route('/taxi/')
+def carousel_ex_taxi():
+	return render_template('ex_taxi.html')
+
 @app.route('/twitter/')
 def carousel_t():
 	return render_template('carousel_t.html', **twit_url_dict)
